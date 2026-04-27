@@ -19,6 +19,13 @@ export const getByName = async (nombre) => {
     return rows[0];
 };
 
+export const getByIdRaw = async (id) => {
+    // Buscamos el ID sin importar el estado del campo 'activo'
+    const sql = "SELECT * FROM especialidades WHERE id_especialidad = ?";
+    const [rows] = await pool.execute(sql, [id]);
+    return rows[0];
+};
+
 export const create = async (nombre) => {
     const sql = "INSERT INTO especialidades (nombre) VALUES (?)";
     const [result] = await pool.execute(sql, [nombre]);

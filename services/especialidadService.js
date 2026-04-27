@@ -29,6 +29,7 @@ export const crearEspecialidad = async (nombre) => {
   return { id_especialidad: nuevoId, nombre };
 };
 
+
 export const actualizarEspecialidad = async (id, nombre) => {
   // 1. Validar si el nombre nuevo ya existe en OTRA especialidad
   const existeNombre = await especialidadModel.getByName(nombre);
@@ -50,14 +51,28 @@ export const actualizarEspecialidad = async (id, nombre) => {
   return { id, nombre };
 };
 
-export const eliminarEspecialidad = async (id) => {
-  const filasAfectadas = await especialidadModel.deleteLogical(id);
 
-  if (filasAfectadas === 0) {
-    const error = new Error("La especialidad no existe o ya fue eliminada");
+export const eliminarEspecialidad = async (id) => {
+  // 1. Buscamos el registro por ID (sin filtrar por activo)
+  // Usamos el modelo para obtener el registro completo
+  const especialidad = await especialidadModel.getByIdRaw(id); 
+
+  // 2. Si no existe el ID en la tabla
+  if (!especialidad) {
+    const error = new Error("La especialidad no existe");
     error.status = 404;
     throw error;
   }
+
+  // 3. Si existe pero ya tiene activo = 0
+  if (especialidad.activo === 0) {
+    const error = new Error("La especialidad ya había sido eliminada anteriormente");
+    error.status = 410; // 410 Gone es ideal para recursos "borrados"
+    throw error;
+  }
+
+  // 4. Si existe y está activa (activo = 1), procedemos al borrado lógico
+  await especialidadModel.deleteLogical(id);
 
   return { id };
 };
