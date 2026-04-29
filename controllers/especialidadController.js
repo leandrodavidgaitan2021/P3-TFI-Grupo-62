@@ -26,15 +26,15 @@ export const guardarEspecialidad = async (req, res) => {
   try {
     const { nombre } = req.body;
 
-    // Validación básica de entrada
-    if (!nombre) {
-      return res
-        .status(400)
-        .send({ estado: "error", msg: "El nombre es requerido" });
-    }
-
+    // Validación básica de entrada-- se saca por express-validator
+    //if (!nombre) {
+    //  return res
+    //    .status(400)
+    //    .send({ estado: "error", msg: "El nombre es requerido" });
+    //}
+    const nombreMayus = nombre.toUpperCase();
     const nuevaEspecialidad =
-      await especialidadService.crearEspecialidad(nombre);
+      await especialidadService.crearEspecialidad(nombreMayus);
 
     res.status(201).send({
       estado: "ok",
@@ -61,10 +61,10 @@ export const modificarEspecialidad = async (req, res) => {
         .status(400)
         .send({ estado: "error", msg: "El nombre es requerido" });
     }
-
+    const nombreMayus = nombre.toUpperCase();
     const actualizado = await especialidadService.actualizarEspecialidad(
       id_especialidad,
-      nombre,
+      nombreMayus,
     );
 
     res.status(200).send({

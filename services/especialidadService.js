@@ -14,6 +14,7 @@ export const obtenerEspecialidadPorId = async (id) => {
 };
 
 export const crearEspecialidad = async (nombre) => {
+  /*
   // 1. Chequear si ya existe
   const existe = await especialidadModel.getByName(nombre);
 
@@ -23,12 +24,12 @@ export const crearEspecialidad = async (nombre) => {
     error.status = 409; // Conflict
     throw error;
   }
-
+*/
   // 2. Si no existe, crearla
   const nuevoId = await especialidadModel.create(nombre);
+  
   return { id_especialidad: nuevoId, nombre };
 };
-
 
 export const actualizarEspecialidad = async (id, nombre) => {
   // 1. Validar si el nombre nuevo ya existe en OTRA especialidad
@@ -51,11 +52,10 @@ export const actualizarEspecialidad = async (id, nombre) => {
   return { id, nombre };
 };
 
-
 export const eliminarEspecialidad = async (id) => {
   // 1. Buscamos el registro por ID (sin filtrar por activo)
   // Usamos el modelo para obtener el registro completo
-  const especialidad = await especialidadModel.getByIdRaw(id); 
+  const especialidad = await especialidadModel.getByIdRaw(id);
 
   // 2. Si no existe el ID en la tabla
   if (!especialidad) {
@@ -66,7 +66,9 @@ export const eliminarEspecialidad = async (id) => {
 
   // 3. Si existe pero ya tiene activo = 0
   if (especialidad.activo === 0) {
-    const error = new Error("La especialidad ya había sido eliminada anteriormente");
+    const error = new Error(
+      "La especialidad ya había sido eliminada anteriormente",
+    );
     error.status = 410; // 410 Gone es ideal para recursos "borrados"
     throw error;
   }
