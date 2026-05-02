@@ -10,9 +10,9 @@ process.loadEnvFile();
 const PUERTO = process.env.PUERTO || 3000;
 
 // Definición de rutas
-app.use("/app/especialidades", v2Router);
-app.use("/app/v1/especialidades", v1Router);
-app.use("/app/v2/especialidades", v2Router);
+app.use("/api/especialidades", v2Router);
+app.use("/api/v1/especialidades", v1Router);
+app.use("/api/v2/especialidades", v2Router);
 
 // Ruta Principal
 app.get("/", (req, res) => {
