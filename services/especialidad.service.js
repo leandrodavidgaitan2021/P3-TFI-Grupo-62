@@ -1,4 +1,4 @@
-import * as especialidadModel from "../models/especialidadModel.js";
+import * as especialidadModel from "../models/especialidad.model.js";
 
 export const obtenerEspecialidades = async () => {
   // Aquí podrías agregar lógica adicional, filtros, etc.
@@ -14,20 +14,8 @@ export const obtenerEspecialidadPorId = async (id) => {
 };
 
 export const crearEspecialidad = async (nombre) => {
-  /*
-  // 1. Chequear si ya existe
-  const existe = await especialidadModel.getByName(nombre);
-
-  if (existe) {
-    // Lanzamos un error específico que el controlador sepa manejar
-    const error = new Error("La especialidad ya existe");
-    error.status = 409; // Conflict
-    throw error;
-  }
-*/
-  // 2. Si no existe, crearla
   const nuevoId = await especialidadModel.create(nombre);
-  
+
   return { id_especialidad: nuevoId, nombre };
 };
 

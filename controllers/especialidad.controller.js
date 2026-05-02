@@ -1,4 +1,4 @@
-import * as especialidadService from "../services/especialidadService.js";
+import * as especialidadService from "../services/especialidad.service.js";
 
 export const listarEspecialidades = async (req, res) => {
   try {
@@ -26,12 +26,6 @@ export const guardarEspecialidad = async (req, res) => {
   try {
     const { nombre } = req.body;
 
-    // Validación básica de entrada-- se saca por express-validator
-    //if (!nombre) {
-    //  return res
-    //    .status(400)
-    //    .send({ estado: "error", msg: "El nombre es requerido" });
-    //}
     const nombreMayus = nombre.toUpperCase();
     const nuevaEspecialidad =
       await especialidadService.crearEspecialidad(nombreMayus);
