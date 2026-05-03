@@ -2,7 +2,8 @@ import * as especialidadService from "../services/especialidad.service.js";
 
 export const listarEspecialidades = async (req, res) => {
   try {
-    const data = await especialidadService.obtenerEspecialidades();
+    const { nombre } = req.query; // Extrae el filtro de la URL
+    const data = await especialidadService.obtenerEspecialidades(nombre);
     res.send(data);
   } catch (error) {
     console.error(error);

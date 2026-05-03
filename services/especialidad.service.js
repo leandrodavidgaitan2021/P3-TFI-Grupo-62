@@ -1,8 +1,8 @@
-import * as especialidadModel from "../models/especialidad.model.js";
+import * as especialidadModel from "../database/especialidad.database.js";
 
-export const obtenerEspecialidades = async () => {
+export const obtenerEspecialidades = async (nombre) => {
   // Aquí podrías agregar lógica adicional, filtros, etc.
-  return await especialidadModel.getAllActive();
+  return await especialidadModel.getAllActive(nombre);
 };
 
 export const obtenerEspecialidadPorId = async (id) => {

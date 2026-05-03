@@ -1,8 +1,16 @@
 import { pool } from "../db/conexion.js";
 
-export const getAllActive = async () => {
-  const sql = "SELECT * FROM especialidades WHERE activo = 1";
-  const [rows] = await pool.query(sql);
+export const getAllActive = async (nombre) => {
+  let sql = "SELECT * FROM especialidades WHERE activo = 1";
+  const params = [];
+
+  if (nombre) {
+    // Agregamos la condición de búsqueda por nombre
+    sql += " AND nombre LIKE ?";
+    params.push(`%${nombre}%`); // Los % permiten buscar en cualquier parte del texto
+  }
+
+  const [rows] = await pool.query(sql, params);
   return rows;
 };
 
