@@ -2,23 +2,35 @@ import * as especialidadService from "../services/especialidad.service.js";
 
 export const listarEspecialidades = async (req, res) => {
   try {
-    const datos = await especialidadService.obtenerEspecialidades();
-    res.status(200).send({ estado: "ok", especialidades: datos });
+    const data = await especialidadService.obtenerEspecialidades();
+    res.send(data);
   } catch (error) {
-    res.status(500).send({ estado: "error", msg: error.message });
+    console.error(error);
+    res
+      .status(error?.status || 500)
+      .send({ status: "Fallo", error: error?.message || error });
   }
 };
 
 export const buscarEspecialidad = async (req, res) => {
   try {
-    const id = req.params.id_especialidad;
-    const especialidad = await especialidadService.obtenerEspecialidadPorId(id);
-    res.status(200).send({ estado: "ok", especialidad });
-  } catch (error) {
-    if (error.message === "NOT_FOUND") {
-      return res.status(404).send({ estado: "error", msg: "No encontrada" });
+    const id = req.params.especialidadId;
+    const data = await especialidadService.obtenerEspecialidadPorId(id);
+
+    if (!data) {
+      // Importante: agregar 'return' para que no intente ejecutar el código de abajo
+      return res.status(404).send({
+        status: "Fallo",
+        error: "Especialidad no encontrada.",
+      });
     }
-    res.status(500).send({ estado: "error", msg: "Error interno" });
+
+    res.send(data);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(error?.status || 500)
+      .send({ status: "Fallo", error: error?.message || error });
   }
 };
 
@@ -30,63 +42,46 @@ export const guardarEspecialidad = async (req, res) => {
     const nuevaEspecialidad =
       await especialidadService.crearEspecialidad(nombreMayus);
 
-    res.status(201).send({
-      estado: "ok",
-      msg: "Especialidad creada con éxito",
-      data: nuevaEspecialidad,
-    });
+    res.status(201).send(nuevaEspecialidad);
   } catch (error) {
-    // Si el error tiene un status (como el 409 que pusimos en el service), lo usamos
-    const statusCode = error.status || 500;
-    res.status(statusCode).send({
-      estado: "error",
-      msg: error.message || "Error interno del servidor",
-    });
+    console.error(error);
+    res
+      .status(error?.status || 500)
+      .send({ status: "Fallo", error: error?.message || error });
   }
 };
 
 export const modificarEspecialidad = async (req, res) => {
   try {
-    const { id_especialidad } = req.params;
-    const { nombre } = req.body;
+    const especialidadId = req.params.especialidadId;
+    const body = req.body;
 
-    if (!nombre) {
-      return res
-        .status(400)
-        .send({ estado: "error", msg: "El nombre es requerido" });
-    }
     const nombreMayus = nombre.toUpperCase();
-    const actualizado = await especialidadService.actualizarEspecialidad(
-      id_especialidad,
-      nombreMayus,
-    );
+    const especialidadActualizada =
+      await especialidadService.actualizarEspecialidad(
+        especialidadId,
+        nombreMayus,
+      );
 
-    res.status(200).send({
-      estado: "ok",
-      msg: "Especialidad actualizada correctamente",
-      data: actualizado,
-    });
+    res.status(200).send(especialidadActualizada);
   } catch (error) {
-    res.status(error.status || 500).send({
-      estado: "error",
-      msg: error.message,
-    });
+    console.error(error);
+    res
+      .status(error?.status || 500)
+      .send({ status: "Fallo", error: error?.message || error });
   }
 };
 
 export const borrarEspecialidad = async (req, res) => {
   try {
-    const { id_especialidad } = req.params;
-    await especialidadService.eliminarEspecialidad(id_especialidad);
+    const especialidadId = req.params.especialidadId;
+    await especialidadService.eliminarEspecialidad(especialidadId);
 
-    res.status(200).send({
-      estado: "ok",
-      msg: `Especialidad ${id_especialidad} eliminada (lógicamente)`,
-    });
+    res.status(204).send();
   } catch (error) {
-    res.status(error.status || 500).send({
-      estado: "error",
-      msg: error.message,
-    });
+    console.error(error);
+    res
+      .status(error?.status || 500)
+      .send({ status: "Fallo", error: error?.message || error });
   }
 };

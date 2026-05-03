@@ -8,6 +8,6 @@ import {
 const router = express.Router();
 
 router.get("/", listarEspecialidades);
-router.get("/:id_especialidad", buscarEspecialidad);
+router.get("/:especialidadId", buscarEspecialidad);
 
 export { router };

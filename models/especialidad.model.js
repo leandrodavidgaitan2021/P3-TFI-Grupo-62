@@ -20,7 +20,7 @@ export const getByName = async (nombre) => {
 };
 
 export const getByIdRaw = async (id) => {
-  // Buscamos el ID sin importar el estado del campo 'activo'
+  // Buscamos el ID sin importar el status del campo 'activo'
   const sql = "SELECT * FROM especialidades WHERE id_especialidad = ?";
   const [rows] = await pool.execute(sql, [id]);
   return rows[0];
