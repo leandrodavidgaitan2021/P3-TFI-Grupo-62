@@ -1,5 +1,5 @@
 import * as especialidadService from "../services/especialidad.service.js";
-
+//Lista todas las especialidades activas
 export const listarEspecialidades = async (req, res) => {
   try {
     const { nombre } = req.query; // Extrae el filtro de la URL
@@ -12,7 +12,7 @@ export const listarEspecialidades = async (req, res) => {
       .send({ status: "Fallo", error: error?.message || error });
   }
 };
-
+// Guarda una nueva especialidad
 export const buscarEspecialidad = async (req, res) => {
   try {
     const id = req.params.especialidadId;
