@@ -14,9 +14,12 @@ process.loadEnvFile();
 const PUERTO = process.env.PUERTO || 3000;
 
 // Definición de rutas con versiones
-app.use("/api/especialidades", v2Router);
-app.use("/api/v1/especialidades", v1Router);
-app.use("/api/v2/especialidades", v2Router);
+// Versión 1: Funciones
+app.use('/api/v1/especialidades', routerV1);
+
+// Versión 2: Clases 
+app.use('/api/especialidades', routerV2);
+app.use('/api/v2/especialidades', routerV2);
 
 // Ruta Principal
 app.get("/", (req, res) => {
