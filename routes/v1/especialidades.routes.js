@@ -6,9 +6,9 @@ import {
   guardarEspecialidad,
   modificarEspecialidad,
   borrarEspecialidad,
-} from "../controllers/especialidad.controller.js";
+} from "../../controllers/v1/especialidades.controller.js";
 
-import { validatorEspecialidad } from "../validators/especialidadValidator.js";
+import { validatorEspecialidad } from "../../validators/especialidadValidator.js";
 
 const router = express.Router();
 
@@ -18,4 +18,4 @@ router.post("/", validatorEspecialidad, guardarEspecialidad);
 router.put("/:especialidadId", validatorEspecialidad, modificarEspecialidad);
 router.delete("/:especialidadId", borrarEspecialidad);
 
-export { router };
+export default router;

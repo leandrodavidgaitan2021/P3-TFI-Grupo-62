@@ -2,8 +2,8 @@ import express from "express";
 //middleware que valida que solo se reciba datos en json
 import validateContextType from "./middlewares/validateContextType.js";
 // importa versiones de la api
-import { router as v1Router } from "./v1/especialidades.routes.js";
-import { router as v2Router } from "./v2/especialidades.routes.js";
+import v1Router from "./routes/v1/especialidades.routes.js";
+import v2Router from "./routes/v2/especialidades.routes.js";
 
 const app = express();
 
