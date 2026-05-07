@@ -6,11 +6,7 @@ export const obtenerEspecialidades = async (nombre) => {
 };
 
 export const obtenerEspecialidadPorId = async (id) => {
-  const especialidad = await especialidadModel.getById(id);
-  if (!especialidad) {
-    throw new Error("NOT_FOUND");
-  }
-  return especialidad;
+  return await especialidadModel.getById(id);
 };
 
 export const crearEspecialidad = async (nombre) => {

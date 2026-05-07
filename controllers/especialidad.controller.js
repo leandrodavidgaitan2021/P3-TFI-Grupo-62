@@ -43,7 +43,9 @@ export const guardarEspecialidad = async (req, res) => {
     const nuevaEspecialidad =
       await especialidadService.crearEspecialidad(nombreMayus);
 
-    res.status(201).send(nuevaEspecialidad);
+    res.status(201).send({
+      status: "OK",
+      data: nuevaEspecialidad});
   } catch (error) {
     console.error(error);
     res
