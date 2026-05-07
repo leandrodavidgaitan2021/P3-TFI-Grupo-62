@@ -4,8 +4,11 @@ import validateContextType from "./middlewares/validateContextType.js";
 // importa versiones de la api
 import { router as v1Router } from "./v1/especialidades.routes.js";
 import { router as v2Router } from "./v2/especialidades.routes.js";
+import { testConexion } from "./db/test-conexion.js";
 
 const app = express();
+
+await testConexion()
 
 app.use(validateContextType);
 app.use(express.json({ type: "application/json" }));

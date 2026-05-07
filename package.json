@@ -1,7 +1,7 @@
 {
   "name": "turnos",
   "version": "1.0.0",
-  "description": "Gestion de turnos médicos",
+  "description": "Gestión de turnos médicos",
   "license": "ISC",
   "author": "Grupo V",
   "type": "module",

@@ -1,6 +1,6 @@
 Trabajo Final Integrador - Programación III
 
-Grupo 62:
+Grupo V:
 
 Integrantes:
 

@@ -5,7 +5,7 @@ const validateContextType = (req, res, next) => {
     ["POST", "PUT", "PATCH"].includes(req.method) &&
     req.headers["content-type"] !== "application/json"
   ) {
-    return res.status(415).send("Context-Type debe ser application/json");
+    return res.status(415).send("Content-Type debe ser application/json");
   }
   next();
 };
