@@ -48,6 +48,9 @@ export const guardarEspecialidad = async (req, res) => {
       data: nuevaEspecialidad});
   } catch (error) {
     console.error(error);
+    
+    if (error.message === "Ya existe otra especialidad con ese nombre")
+        return res.status (409).send({status: "Fallo", error: error?.message});    
     res
       .status(error?.status || 500)
       .send({ status: "Fallo", error: error?.message || error });
@@ -57,7 +60,7 @@ export const guardarEspecialidad = async (req, res) => {
 export const modificarEspecialidad = async (req, res) => {
   try {
     const especialidadId = req.params.especialidadId;
-    const body = req.body;
+    const { nombre } = req.body;
 
     const nombreMayus = nombre.toUpperCase();
     const especialidadActualizada =
@@ -66,9 +69,19 @@ export const modificarEspecialidad = async (req, res) => {
         nombreMayus,
       );
 
-    res.status(200).send(especialidadActualizada);
+    res.status(200).send({
+      status: "OK",
+      data: especialidadActualizada});
+
   } catch (error) {
     console.error(error);
+
+    if (error.message === "No se encontró la especialidad para actualizar")
+      return res.status(404).send({ status: "Fallo", error: error?.message});
+    
+    if (error.message === "Ya existe otra especialidad con ese nombre")
+        return res.status (409).send({status: "Fallo", error: error?.message});
+
     res
       .status(error?.status || 500)
       .send({ status: "Fallo", error: error?.message || error });
@@ -83,6 +96,15 @@ export const borrarEspecialidad = async (req, res) => {
     res.status(204).send();
   } catch (error) {
     console.error(error);
+    
+    if (error.message === "La especialidad no existe") {
+      return res.status (404).send({status: "Fallo", error: error?.message});
+    }
+
+    if (error.message === "La especialidad ya había sido eliminada anteriormente") {
+      return res.status (410).send({status: "Fallo", error: error?.message}); 
+    }
+
     res
       .status(error?.status || 500)
       .send({ status: "Fallo", error: error?.message || error });

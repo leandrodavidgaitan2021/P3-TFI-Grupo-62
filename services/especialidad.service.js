@@ -10,27 +10,35 @@ export const obtenerEspecialidadPorId = async (id) => {
 };
 
 export const crearEspecialidad = async (nombre) => {
-  const nuevoId = await especialidadModel.create(nombre);
+  const nombreDuplicado = await especialidadModel.getByName(nombre);
 
+    if (nombreDuplicado) {
+    throw new Error("Ya existe otra especialidad con ese nombre");
+  }
+
+  const nuevoId = await especialidadModel.create(nombre);
+  
   return { id_especialidad: nuevoId, nombre };
 };
 
 export const actualizarEspecialidad = async (id, nombre) => {
-  // 1. Validar si el nombre nuevo ya existe en OTRA especialidad
+  // 1. Verificar si el Id existe y si está activo
+  const existeId = await especialidadModel.getById(id);
+
+  if (!existeId) {
+    throw new Error ("No se encontró la especialidad para actualizar");
+  }
+  // 2. Validar si el nombre nuevo ya existe en OTRA especialidad
   const existeNombre = await especialidadModel.getByName(nombre);
   if (existeNombre && existeNombre.id_especialidad !== parseInt(id)) {
-    const error = new Error("Ya existe otra especialidad con ese nombre");
-    error.status = 409;
-    throw error;
+    throw new Error("Ya existe otra especialidad con ese nombre");
   }
 
-  // 2. Intentar actualizar
+  // 3. Intentar actualizar
   const filasAfectadas = await especialidadModel.update(id, nombre);
 
   if (filasAfectadas === 0) {
-    const error = new Error("No se encontró la especialidad para actualizar");
-    error.status = 404;
-    throw error;
+    throw new Error("No se encontró la especialidad para actualizar");
   }
 
   return { id, nombre };
@@ -43,20 +51,15 @@ export const eliminarEspecialidad = async (id) => {
 
   // 2. Si no existe el ID en la tabla
   if (!especialidad) {
-    const error = new Error("La especialidad no existe");
-    error.status = 404;
-    throw error;
+    throw new Error("La especialidad no existe");
   }
 
   // 3. Si existe pero ya tiene activo = 0
   if (especialidad.activo === 0) {
-    const error = new Error(
-      "La especialidad ya había sido eliminada anteriormente",
+    throw new Error(
+      "La especialidad ya había sido eliminada anteriormente"
     );
-    error.status = 410; // 410 Gone es ideal para recursos "borrados"
-    throw error;
   }
-
   // 4. Si existe y está activa (activo = 1), procedemos al borrado lógico
   await especialidadModel.deleteLogical(id);
 
