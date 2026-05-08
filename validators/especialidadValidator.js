@@ -9,5 +9,5 @@ export const validatorEspecialidad = [
     .isLength({ min: 3, max: 120 })
     .withMessage("El nombre debe tener entre 3 y 120 caracteres")
     .escape(),
-  validarCampos, // Llamamos al middleware que creamos antes
+  validarCampos,
 ];
