@@ -6,9 +6,9 @@ export default class Especialidades {
     const params = [];
 
     if (nombre) {
-      // Agregamos la condición de búsqueda por nombre
+
       sql += " AND nombre LIKE ?";
-      params.push(`%${nombre}%`); // Los % permiten buscar en cualquier parte del texto
+      params.push(`%${nombre}%`);
     }
 
     const [rows] = await pool.query(sql, params);
@@ -19,7 +19,7 @@ export default class Especialidades {
     const sql =
       "SELECT * FROM especialidades WHERE activo = 1 AND id_especialidad = ?";
     const [rows] = await pool.execute(sql, [id]);
-    return rows[0]; // Retornamos el objeto o undefined
+    return rows[0]; 
   };
 
   getByName = async (nombre) => {
@@ -29,7 +29,6 @@ export default class Especialidades {
   };
 
   getByIdRaw = async (id) => {
-    // Buscamos el ID sin importar el status del campo 'activo'
     const sql = "SELECT * FROM especialidades WHERE id_especialidad = ?";
     const [rows] = await pool.execute(sql, [id]);
     return rows[0];
@@ -45,7 +44,7 @@ export default class Especialidades {
     const sql =
       "UPDATE especialidades SET nombre = ? WHERE id_especialidad = ? AND activo = 1";
     const [result] = await pool.execute(sql, [nombre, id]);
-    return result.affectedRows; // Retorna 1 si actualizó, 0 si no encontró el ID
+    return result.affectedRows; 
   };
 
   deleteLogical = async (id) => {

@@ -61,7 +61,7 @@ export default class EspecialidadesController {
     }
   };
 
-  // PUT / PATCH
+  // PUT
   modificacion = async (req, res) => {
     try {
       const { especialidadId } = req.params;
@@ -98,7 +98,7 @@ export default class EspecialidadesController {
     }
   };
 
-  // Manejo interno
+  // Manejo interno de errores
   #error = (res, error) => {
     res.status(error?.status || 500).send({
       status: "Fallo",

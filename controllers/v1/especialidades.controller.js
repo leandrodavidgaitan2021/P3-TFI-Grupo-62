@@ -2,7 +2,7 @@ import * as EspecialidadesService from "../../services/v1/especialidades.service
 
 export const listarEspecialidades = async (req, res) => {
   try {
-    const { nombre } = req.query; // Extrae el filtro de la URL
+    const { nombre } = req.query; 
     const data = await EspecialidadesService.obtenerEspecialidades(nombre);
     res.status(200).send({
       status: "OK",
@@ -23,7 +23,7 @@ export const buscarEspecialidad = async (req, res) => {
     const data = await EspecialidadesService.obtenerEspecialidadPorId(id);
 
     if (!data) {
-      // Importante: agregar 'return' para que no intente ejecutar el código de abajo
+      
       return res.status(404).send({
         status: "Fallo",
         error: "Especialidad no encontrada.",

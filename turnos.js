@@ -3,7 +3,6 @@ import cors from "cors";
 import helmet from "helmet";
 import validateContextType from "./middlewares/validateContextType.js";
 
-// Importación de versiones de la API
 import v1Router from "./routes/v1/especialidades.routes.js";
 import v2Router from "./routes/especialidades.routes.js";
 
@@ -29,10 +28,10 @@ process.loadEnvFile();
 const PUERTO = process.env.PUERTO || 3000;
 
 // --- Definición de Rutas ---
-// Versión 1: Enfoque Funcional
+// Versión 1: Funcional
 app.use("/api/v1/especialidades", v1Router);
 
-// Versión 2: Enfoque Clases (Instancias)
+// Versión 2: Clases (Instancias)
 app.use("/api/especialidades", v2Router);
 app.use("/api/v2/especialidades", v2Router);
 
