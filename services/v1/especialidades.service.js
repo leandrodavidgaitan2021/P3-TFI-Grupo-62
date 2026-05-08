@@ -1,12 +1,12 @@
-import * as EspecialidadDatabase from "../../database/v1/especialidades.database.js";
+import * as EspecialidadesDatabase from "../../database/v1/especialidades.database.js";
 
 export const obtenerEspecialidades = async (nombre) => {
   // Aquí podrías agregar lógica adicional, filtros, etc.
-  return await EspecialidadDatabase.getAllActive(nombre);
+  return await EspecialidadesDatabase.getAllActive(nombre);
 };
 
 export const obtenerEspecialidadPorId = async (id) => {
-  const especialidad = await EspecialidadDatabase.getById(id);
+  const especialidad = await EspecialidadesDatabase.getById(id);
   if (!especialidad) {
     throw new Error("NOT_FOUND");
   }
@@ -14,14 +14,14 @@ export const obtenerEspecialidadPorId = async (id) => {
 };
 
 export const crearEspecialidad = async (nombre) => {
-  const nuevoId = await EspecialidadDatabase.create(nombre);
+  const nuevoId = await EspecialidadesDatabase.create(nombre);
 
   return { id_especialidad: nuevoId, nombre };
 };
 
 export const actualizarEspecialidad = async (id, nombre) => {
   // 1. Validar si el nombre nuevo ya existe en OTRA especialidad
-  const existeNombre = await EspecialidadDatabase.getByName(nombre);
+  const existeNombre = await EspecialidadesDatabase.getByName(nombre);
   if (existeNombre && existeNombre.id_especialidad !== parseInt(id)) {
     const error = new Error("Ya existe otra especialidad con ese nombre");
     error.status = 409;
@@ -29,7 +29,7 @@ export const actualizarEspecialidad = async (id, nombre) => {
   }
 
   // 2. Intentar actualizar
-  const filasAfectadas = await EspecialidadDatabase.update(id, nombre);
+  const filasAfectadas = await EspecialidadesDatabase.update(id, nombre);
 
   if (filasAfectadas === 0) {
     const error = new Error("No se encontró la especialidad para actualizar");
@@ -43,7 +43,7 @@ export const actualizarEspecialidad = async (id, nombre) => {
 export const eliminarEspecialidad = async (id) => {
   // 1. Buscamos el registro por ID (sin filtrar por activo)
   // Usamos el modelo para obtener el registro completo
-  const especialidad = await EspecialidadDatabase.getByIdRaw(id);
+  const especialidad = await EspecialidadesDatabase.getByIdRaw(id);
 
   // 2. Si no existe el ID en la tabla
   if (!especialidad) {
@@ -62,7 +62,7 @@ export const eliminarEspecialidad = async (id) => {
   }
 
   // 4. Si existe y está activa (activo = 1), procedemos al borrado lógico
-  await EspecialidadDatabase.deleteLogical(id);
+  await EspecialidadesDatabase.deleteLogical(id);
 
   return { id };
 };

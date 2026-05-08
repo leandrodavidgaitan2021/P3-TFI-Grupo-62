@@ -1,19 +1,24 @@
-import EspecialidadDatabase from "../../database/v2/especialidades.database.js";
+import Especialidades from "../database/especialidades.database.js";
 
-class EspecialidadService {
+export default class EspecialidadesService {
+  // Constructor
+  constructor() {
+    this.especialidades = new Especialidades();
+  }
+
   /**
    * Lista especialidades activas.
    */
-  static listar = async (nombre) => {
-    return await EspecialidadDatabase.getAllActive(nombre);
+  lista = async (nombre) => {
+    return await this.especialidades.getAll(nombre);
   };
 
   /**
    * Busca por ID.
    * Reutilizamos este método internamente para validar existencia.
    */
-  static buscarPorId = async (id) => {
-    const especialidad = await EspecialidadDatabase.getById(id);
+  buscaPorId = async (id) => {
+    const especialidad = await this.especialidades.getById(id);
     if (!especialidad) {
       const error = new Error("Especialidad no encontrada");
       error.status = 404;
@@ -25,31 +30,24 @@ class EspecialidadService {
   /**
    * Crea una nueva especialidad validando duplicados.
    */
-  static crear = async (nombre) => {
-    const existe = await EspecialidadDatabase.getByName(nombre);
-    if (existe) {
-      const error = new Error("La especialidad ya existe");
-      error.status = 409;
-      throw error;
-    }
-
-    const nuevoId = await EspecialidadDatabase.create(nombre);
-    return { id_especialidad: nuevoId, nombre };
+  crea = async (nombre) => {
+    const nuevaId = await this.especialidades.create(nombre);
+    return { id_especialidad: nuevaId, nombre };
   };
 
   /**
    * Actualiza una especialidad.
    */
-  static actualizar = async (id, nombre) => {
+  actualiza = async (id, nombre) => {
     // Validamos duplicados de nombre en otros registros
-    const existeNombre = await EspecialidadDatabase.getByName(nombre);
+    const existeNombre = await this.especialidades.getByName(nombre);
     if (existeNombre && existeNombre.id_especialidad !== parseInt(id)) {
       const error = new Error("Ya existe otra especialidad con ese nombre");
       error.status = 409;
       throw error;
     }
 
-    const filasAfectadas = await EspecialidadDatabase.update(id, nombre);
+    const filasAfectadas = await this.especialidades.update(id, nombre);
     if (filasAfectadas === 0) {
       const error = new Error("No se encontró la especialidad para actualizar");
       error.status = 404;
@@ -57,14 +55,14 @@ class EspecialidadService {
     }
 
     // Usamos this para retornar el objeto actualizado mediante otro método de la clase
-    return await this.buscarPorId(id);
+    return { id, nombre };
   };
 
   /**
    * Borrado lógico de especialidad.
    */
-  static eliminar = async (id) => {
-    const especialidad = await EspecialidadDatabase.getByIdRaw(id);
+  elimina = async (id) => {
+    const especialidad = await this.especialidades.getByIdRaw(id);
 
     if (!especialidad) {
       const error = new Error("La especialidad no existe");
@@ -78,9 +76,7 @@ class EspecialidadService {
       throw error;
     }
 
-    await EspecialidadDatabase.deleteLogical(id);
-    return { id, eliminado: true };
+    await this.especialidades.deleteLogical(id);
+    return { id };
   };
 }
-
-export default EspecialidadService;
