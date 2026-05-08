@@ -1,10 +1,14 @@
-import * as especialidadService from "../services/especialidad.service.js";
+import * as EspecialidadesService from "../../services/v1/especialidades.service.js";
 
 export const listarEspecialidades = async (req, res) => {
   try {
     const { nombre } = req.query; // Extrae el filtro de la URL
-    const data = await especialidadService.obtenerEspecialidades(nombre);
-    res.send(data);
+    const data = await EspecialidadesService.obtenerEspecialidades(nombre);
+    res.status(200).send({
+      status: "OK",
+      message: "Lista de especialidades obtenida con éxito",
+      data,
+    });
   } catch (error) {
     console.error(error);
     res
@@ -16,7 +20,7 @@ export const listarEspecialidades = async (req, res) => {
 export const buscarEspecialidad = async (req, res) => {
   try {
     const id = req.params.especialidadId;
-    const data = await especialidadService.obtenerEspecialidadPorId(id);
+    const data = await EspecialidadesService.obtenerEspecialidadPorId(id);
 
     if (!data) {
       // Importante: agregar 'return' para que no intente ejecutar el código de abajo
@@ -26,7 +30,11 @@ export const buscarEspecialidad = async (req, res) => {
       });
     }
 
-    res.send(data);
+    res.status(200).send({
+      status: "OK",
+      message: "Especialidad encontrada",
+      data,
+    });
   } catch (error) {
     console.error(error);
     res
@@ -41,9 +49,13 @@ export const guardarEspecialidad = async (req, res) => {
 
     const nombreMayus = nombre.toUpperCase();
     const nuevaEspecialidad =
-      await especialidadService.crearEspecialidad(nombreMayus);
+      await EspecialidadesService.crearEspecialidad(nombreMayus);
 
-    res.status(201).send(nuevaEspecialidad);
+    res.status(201).send({
+      status: "OK",
+      message: "Especialidad creada correctamente",
+      data: nuevaEspecialidad,
+    });
   } catch (error) {
     console.error(error);
     res
@@ -55,16 +67,20 @@ export const guardarEspecialidad = async (req, res) => {
 export const modificarEspecialidad = async (req, res) => {
   try {
     const especialidadId = req.params.especialidadId;
-    const body = req.body;
+    const { nombre } = req.body;
 
     const nombreMayus = nombre.toUpperCase();
     const especialidadActualizada =
-      await especialidadService.actualizarEspecialidad(
+      await EspecialidadesService.actualizarEspecialidad(
         especialidadId,
         nombreMayus,
       );
 
-    res.status(200).send(especialidadActualizada);
+    res.status(200).send({
+      status: "OK",
+      message: "Especialidad actualizada con éxito",
+      data: especialidadActualizada,
+    });
   } catch (error) {
     console.error(error);
     res
@@ -76,9 +92,12 @@ export const modificarEspecialidad = async (req, res) => {
 export const borrarEspecialidad = async (req, res) => {
   try {
     const especialidadId = req.params.especialidadId;
-    await especialidadService.eliminarEspecialidad(especialidadId);
+    await EspecialidadesService.eliminarEspecialidad(especialidadId);
 
-    res.status(204).send();
+    res.status(200).send({
+      status: "OK",
+      message: `Especialidad con ID ${especialidadId} eliminada correctamente`,
+    });
   } catch (error) {
     console.error(error);
     res

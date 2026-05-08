@@ -1,4 +1,4 @@
-import { pool } from "../db/conexion.js";
+import { pool } from "../../db/conexion.js";
 
 export const getAllActive = async (nombre) => {
   let sql = "SELECT * FROM especialidades WHERE activo = 1";
