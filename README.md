@@ -1,6 +1,6 @@
 Trabajo Final Integrador - Programación III
 
-Grupo 62:
+Grupo V:
 
 Integrantes:
 
@@ -14,7 +14,7 @@ Cuevas Abril
 
 Olmos Gustavo
 
-Repositorio: https://github.com/leandrodavidgaitan2021/P3-TFI-Grupo-62.git
+Repositorio: https://github.com/leandrodavidgaitan2021/P3-TFI-Grupo-V.git
 
 Enlace Video:
 
