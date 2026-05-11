@@ -8,7 +8,8 @@
   "main": "turnos.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --watch turnos.js"
+    "start": "node turnos.js",
+    "dev": "node --watch turnos.js"
   },
   "dependencies": {
     "cors": "^2.8.6",

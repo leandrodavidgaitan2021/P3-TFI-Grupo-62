@@ -1,3 +1,4 @@
+//turnos.js
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -5,6 +6,7 @@ import validateContextType from "./middlewares/validateContextType.js";
 
 import v1Router from "./routes/v1/especialidades.routes.js";
 import v2Router from "./routes/especialidades.routes.js";
+import obrasSocialesRouter from "./routes/obrasSociales.routes.js";
 
 const app = express();
 
@@ -28,12 +30,16 @@ process.loadEnvFile();
 const PUERTO = process.env.PUERTO || 3000;
 
 // --- Definición de Rutas ---
-// Versión 1: Funcional
+// Versión 1 Especialidades: Funcional
 app.use("/api/v1/especialidades", v1Router);
 
-// Versión 2: Clases (Instancias)
+// Versión 2 Especialidades: Clases (Instancias)
 app.use("/api/especialidades", v2Router);
 app.use("/api/v2/especialidades", v2Router);
+
+// Obras Sociales
+app.use("/api/obras-sociales", obrasSocialesRouter);
+app.use("/api/v2/obras-sociales", obrasSocialesRouter);
 
 app.get("/", (req, res) => {
   res.status(200).send({
